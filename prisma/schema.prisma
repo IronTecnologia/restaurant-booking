@@ -1,0 +1,235 @@
+// Restaurant Booking SaaS - Complete Schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ============================================
+// AUTH & USERS
+// ============================================
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String
+  password  String     // bcrypted
+  phone     String?    // WhatsApp number
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  restaurantAdmins   RestaurantAdmin[]
+
+  @@map("users")
+}
+
+// ============================================
+// RESTAURANT (Multi-tenant)
+// ============================================
+
+model Restaurant {
+  id    String     @id @default(cuid())
+  slug  String     @unique // público link: /reserva/{slug}
+
+  // Informações básicas
+  name              String
+  email             String?
+  phone             String?
+  whatsapp          String?
+  instagram         String?
+
+  // Mídias
+  logo              String?    // URL da logo
+  coverImage        String?    // URL da foto de capa
+
+  // Localização
+  address           String?
+  city              String?
+  state             String?
+  zipCode           String?
+  latitude          Float?
+  longitude         Float?
+
+  // Capacidade
+  totalCapacity     Int        @default(20) // total de assentos
+
+  // Status
+  isActive          Boolean    @default(true)
+
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  // Relations
+  admins            RestaurantAdmin[]
+  settings          RestaurantSettings?
+  tables            Table[]
+  reservations      Reservation[]
+  operatingHours    OperatingHours[]
+
+  @@index([slug])
+  @@map("restaurants")
+}
+
+// Admin/Owner do restaurante (Multi-tenant)
+model RestaurantAdmin {
+  id        String     @id @default(cuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  role      String     @default("admin") // admin, manager, staff
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([userId, restaurantId])
+  @@map("restaurant_admins")
+}
+
+// ============================================
+// CONFIGURAÇÕES
+// ============================================
+
+model RestaurantSettings {
+  id           String     @id @default(cuid())
+  restaurantId String     @unique
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  // Aprovação de reservas
+  autoApprove              Boolean @default(false)
+  minGuestCount            Int     @default(1)
+  maxGuestCount            Int     @default(100)
+  minAdvanceHours          Int     @default(1)  // mínimo de horas antecedência
+  maxAdvanceHours          Int     @default(720) // máximo (30 dias)
+
+  // Mesas
+  defaultTableOccupancyMin Int     @default(60)  // minutos
+
+  // WhatsApp
+  whatsappEnabled          Boolean @default(true)
+  confirmationMessage      String  @default("Olá! Sua reserva foi confirmada 🎉\n\nRestaurante: {restaurant}\nData: {date}\nHóspedes: {guests}\nCódigo: {code}\n\nAguardamos sua visita!")
+
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@map("restaurant_settings")
+}
+
+// Horário de funcionamento
+model OperatingHours {
+  id           String     @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  dayOfWeek    Int        // 0-6 (domingo a sábado)
+  openTime     String     // HH:mm
+  closeTime    String     // HH:mm
+  isClosed     Boolean    @default(false)
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([restaurantId, dayOfWeek])
+  @@map("operating_hours")
+}
+
+// ============================================
+// MESAS
+// ============================================
+
+model Table {
+  id           String     @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  tableNumber  Int
+  capacity     Int        // quantas pessoas cabem
+  section      String     // "interna", "externa", "varanda", "vip"
+  isActive     Boolean    @default(true)
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // Relations
+  reservations Reservation[]
+
+  @@unique([restaurantId, tableNumber])
+  @@index([restaurantId])
+  @@map("tables")
+}
+
+// ============================================
+// RESERVAS
+// ============================================
+
+model Reservation {
+  id               String     @id @default(cuid())
+
+  // Guest info (sem precisar de User)
+  guestName        String
+  guestPhone       String
+  guestEmail       String?
+
+  restaurantId     String
+  restaurant       Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  tableId          String
+  table            Table      @relation(fields: [tableId], references: [id], onDelete: Cascade)
+
+  // Informações da reserva
+  reservationDate  DateTime
+  guestCount       Int
+  notes            String?
+
+  // Status: solicitada, confirmada, check-in, finalizada, no-show, cancelada
+  status           String     @default("solicitada")
+
+  // Códigos
+  confirmationCode String     @unique
+
+  // Timestamps
+  confirmedAt      DateTime?
+  checkedInAt      DateTime?
+  finishedAt       DateTime?
+  cancelledAt      DateTime?
+  noShowAt         DateTime?
+
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  // Relations
+  checkIn          CheckIn?
+
+  @@index([restaurantId])
+  @@index([status])
+  @@index([reservationDate])
+  @@map("reservations")
+}
+
+// ============================================
+// CHECK-IN & RECEPÇÃO
+// ============================================
+
+model CheckIn {
+  id            String      @id @default(cuid())
+
+  reservationId String      @unique
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  arrivedAt     DateTime    // Horário de chegada
+  departedAt    DateTime?   // Horário de saída
+
+  notes         String?     // Observações do atendimento
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("check_ins")
+}
