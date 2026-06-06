@@ -37,11 +37,15 @@ export default function LoginPage() {
 
       if (res.ok) {
         setSuccess(tab === 'register' ? 'Conta criada! Redirecionando...' : 'Login bem-sucedido! Redirecionando...');
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
         setTimeout(() => {
           window.location.href = '/dashboard';
         }, 1500);
       } else {
-        setError(data.message || 'Erro ao processar requisição');
+        setError(data.error || data.message || 'Erro ao processar requisição');
       }
     } catch (error) {
       setError('Erro ao conectar. Tente novamente.');

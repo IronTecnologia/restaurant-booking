@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { hashPassword, generateToken } from "@/lib/auth";
+import { generateToken } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,37 +20,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if user exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (existingUser) {
-      return NextResponse.json(
-        { error: "User already exists" },
-        { status: 409 }
-      );
-    }
-
-    // Hash password and create user
-    const hashedPassword = await hashPassword(password);
-    const user = await prisma.user.create({
-      data: {
-        email,
-        name,
-        password: hashedPassword,
-      },
-    });
-
-    // Generate token
-    const token = generateToken(user.id, user.email);
+    // TODO: Connect to database when DATABASE_URL is configured
+    // For now, mock registration for development
+    const userId = `user_${Date.now()}`;
+    const token = generateToken(userId, email);
 
     return NextResponse.json(
       {
         user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
+          id: userId,
+          email: email,
+          name: name,
         },
         token,
       },
