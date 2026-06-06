@@ -17,9 +17,11 @@ interface WaveConfig {
 }
 
 const highlightPills = [
-  "Inteligência IA",
-  "Tempo real",
-  "GPU otimizado",
+  "✅ Reservas online 24 horas",
+  "✅ Controle inteligente de mesas",
+  "✅ Confirmação automática",
+  "✅ Check-in digital",
+  "✅ Mais faturamento",
 ] as const;
 
 const heroStats: { label: string; value: string }[] = [
@@ -258,9 +260,9 @@ export function GlowyWavesHero() {
             variants={itemVariants}
             className="mb-6 text-4xl font-semibold tracking-tight text-white md:text-6xl lg:text-7xl"
           >
-            Sistema Inteligente <br />
+            Pare de perder clientes <br />
             <span className="bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-              para Restaurantes
+              por falta de organização
             </span>
           </motion.h1>
 
@@ -268,7 +270,7 @@ export function GlowyWavesHero() {
             variants={itemVariants}
             className="mx-auto mb-10 max-w-3xl text-lg text-white/70 md:text-2xl"
           >
-            Gerencie reservas, mesas e clientes de forma inteligente. Aumente lucros, reduza no-shows e melhore a experiência dos seus clientes.
+            Centralize reservas, mesas e atendimento em uma única plataforma. Reduza no-shows, aumente a ocupação do restaurante e ofereça uma experiência profissional desde a reserva até o check-in.
           </motion.p>
 
           <motion.div
