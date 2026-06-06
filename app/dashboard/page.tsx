@@ -2,8 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { Calendar, Users, TrendingUp, Clock } from 'lucide-react';
+import { useState } from 'react';
+import Link from 'next/link';
 
 export default function DashboardPage() {
+  const [showModal, setShowModal] = useState(false);
   const stats = [
     {
       label: 'Reservas Hoje',
@@ -122,9 +125,11 @@ export default function DashboardPage() {
               </motion.div>
             ))}
           </div>
-          <button className="w-full mt-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition font-medium">
-            Ver todas as reservas →
-          </button>
+          <Link href="/dashboard/reservas" className="block w-full mt-4">
+            <button className="w-full py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition font-medium">
+              Ver todas as reservas →
+            </button>
+          </Link>
         </div>
 
         {/* Quick Actions */}
@@ -132,23 +137,28 @@ export default function DashboardPage() {
           <h3 className="text-lg font-bold text-gray-900 mb-4">Ações Rápidas</h3>
           <div className="space-y-3">
             <motion.button
+              onClick={() => setShowModal(true)}
               whileHover={{ scale: 1.05 }}
               className="w-full py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700 transition"
             >
               + Nova Reserva
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-            >
-              Mapa de Mesas
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="w-full py-3 rounded-lg border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition"
-            >
-              Convidados Hoje
-            </motion.button>
+            <Link href="/dashboard/mapa-mesas" className="block">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+              >
+                Mapa de Mesas
+              </motion.button>
+            </Link>
+            <Link href="/dashboard/convidados" className="block">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                className="w-full py-3 rounded-lg border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition"
+              >
+                Convidados Hoje
+              </motion.button>
+            </Link>
           </div>
         </div>
       </motion.div>
@@ -171,6 +181,60 @@ export default function DashboardPage() {
           </p>
         </div>
       </motion.div>
+
+      {/* Modal Nova Reserva */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl p-8 max-w-md w-full"
+          >
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Nova Reserva</h3>
+            <form className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nome</label>
+                <input type="text" className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-amber-600 focus:outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <input type="email" className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-amber-600 focus:outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                <input type="tel" className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-amber-600 focus:outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Data</label>
+                <input type="date" className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-amber-600 focus:outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Hora</label>
+                <input type="time" className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-amber-600 focus:outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Número de Pessoas</label>
+                <input type="number" className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-amber-600 focus:outline-none" />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="flex-1 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition font-medium"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition font-medium"
+                >
+                  Criar Reserva
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   );
 }
