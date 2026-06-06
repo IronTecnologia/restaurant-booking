@@ -7,77 +7,77 @@ const restaurantImages = [
   {
     title: 'Sabor Paulista',
     link: '/reserva/sabor-paulista',
-    thumbnail: 'https://images.unsplash.com/photo-1517248135467-4d71bcdd2d59?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/821365/pexels-photo-821365.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Casa da Pasta',
     link: '/reserva/casa-pasta',
-    thumbnail: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Churrascaria Premium',
     link: '/reserva/churrascaria',
-    thumbnail: 'https://images.unsplash.com/photo-1555939594-58d7cb561039?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Sushi Artesanal',
     link: '/reserva/sushi',
-    thumbnail: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Pizzaria Napolitana',
     link: '/reserva/pizzaria',
-    thumbnail: 'https://images.unsplash.com/photo-1564535404-b50879663b1d?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/905847/pexels-photo-905847.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Bistrô Francês',
     link: '/reserva/bistro',
-    thumbnail: 'https://images.unsplash.com/photo-1514432324607-2e467f4af445?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1397911/pexels-photo-1397911.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Restaurante Gourmet',
     link: '/reserva/gourmet',
-    thumbnail: 'https://images.unsplash.com/photo-1504674900152-e370e30a3f1d?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Chácara Tropical',
     link: '/reserva/tropical',
-    thumbnail: 'https://images.unsplash.com/photo-1505228395891-9a51e7e86e81?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Restaurante Tradicional',
     link: '/reserva/tradicional',
-    thumbnail: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Casa do Açaí',
     link: '/reserva/acai',
-    thumbnail: 'https://images.unsplash.com/photo-1559329007-40790c361d38?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Churrascaria do Sul',
     link: '/reserva/churrascaria-sul',
-    thumbnail: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Restaurante Vegetariano',
     link: '/reserva/vegetariano',
-    thumbnail: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Seafood & Grill',
     link: '/reserva/seafood',
-    thumbnail: 'https://images.unsplash.com/photo-1470521072507-9c876d2b7845?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1998920/pexels-photo-1998920.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Café Boutique',
     link: '/reserva/cafe',
-    thumbnail: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?w=600&h=600&fit=crop',
   },
   {
     title: 'Rotisseria Premium',
     link: '/reserva/rotisseria',
-    thumbnail: 'https://images.unsplash.com/photo-1555939594-58d7cb561039?w=600&h=600&fit=crop',
+    thumbnail: 'https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?w=600&h=600&fit=crop',
   },
 ];
 
