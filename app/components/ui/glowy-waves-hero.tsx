@@ -1,7 +1,8 @@
 "use client";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AuthModal } from "./auth-modal";
 
 type Point = {
   x: number;
@@ -61,6 +62,7 @@ export function GlowyWavesHero() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mouseRef = useRef<Point>({ x: 0, y: 0 });
   const targetMouseRef = useRef<Point>({ x: 0, y: 0 });
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -240,6 +242,11 @@ export function GlowyWavesHero() {
         className="absolute inset-0 h-full w-full"
         aria-hidden="true"
       />
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        initialTab="register"
+      />
 
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center px-6 py-24 text-center md:px-8 lg:px-12">
         <motion.div
@@ -277,14 +284,20 @@ export function GlowyWavesHero() {
             variants={itemVariants}
             className="mb-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
-            <button className="group gap-2 rounded-full bg-amber-600 px-8 py-3 text-base font-semibold uppercase tracking-[0.2em] text-white hover:bg-amber-700 transition flex items-center">
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="group gap-2 rounded-full bg-amber-600 px-8 py-3 text-base font-semibold uppercase tracking-[0.2em] text-white hover:bg-amber-700 transition flex items-center"
+            >
               Começar Grátis
               <ArrowRight
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 aria-hidden="true"
               />
             </button>
-            <button className="rounded-full border border-white/20 bg-white/5 px-8 py-3 text-base font-semibold uppercase tracking-[0.2em] text-white/80 hover:border-white/40 hover:bg-white/10 transition">
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="rounded-full border border-white/20 bg-white/5 px-8 py-3 text-base font-semibold uppercase tracking-[0.2em] text-white/80 hover:border-white/40 hover:bg-white/10 transition"
+            >
               Acessar Conta
             </button>
           </motion.div>
