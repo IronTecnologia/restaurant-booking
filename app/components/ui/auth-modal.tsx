@@ -12,41 +12,6 @@ interface AuthModalProps {
 
 export function AuthModal({ isOpen, onClose, initialTab = 'register' }: AuthModalProps) {
   const [tab, setTab] = useState<'login' | 'register'>(initialTab);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const endpoint = tab === 'register' ? '/api/auth/register' : '/api/auth/login';
-      const body = tab === 'register'
-        ? { name, email, password }
-        : { email, password };
-
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      if (res.ok) {
-        onClose();
-        // Aqui você pode redirecionar ou atualizar o estado
-        window.location.href = '/dashboard';
-      } else {
-        alert('Erro ao ' + (tab === 'register' ? 'registrar' : 'fazer login'));
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Erro ao conectar');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (!isOpen) return null;
 
@@ -69,59 +34,20 @@ export function AuthModal({ isOpen, onClose, initialTab = 'register' }: AuthModa
           {tab === 'register' ? 'Criar Conta' : 'Entrar'}
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {tab === 'register' && (
-            <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
-                Nome do Restaurante
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg bg-white/10 px-4 py-3 text-white placeholder-white/50 border border-white/10 focus:border-amber-600 focus:outline-none"
-                placeholder="Seu restaurante"
-                required
-              />
-            </div>
-          )}
+        <p className="text-white/60 text-sm mb-6">
+          Acesse a plataforma completa de autenticação para gerenciar sua conta.
+        </p>
 
-          <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg bg-white/10 px-4 py-3 text-white placeholder-white/50 border border-white/10 focus:border-amber-600 focus:outline-none"
-              placeholder="seu@email.com"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
-              Senha
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg bg-white/10 px-4 py-3 text-white placeholder-white/50 border border-white/10 focus:border-amber-600 focus:outline-none"
-              placeholder="••••••••"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-amber-600 py-3 font-semibold text-white hover:bg-amber-700 disabled:opacity-50 transition"
+        <a href={`/login?tab=${tab}`} className="block">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="button"
+            className="w-full rounded-lg bg-gradient-to-r from-amber-600 to-orange-500 py-3 font-semibold text-white hover:from-amber-700 hover:to-orange-600 transition"
           >
-            {loading ? 'Processando...' : tab === 'register' ? 'Criar Conta' : 'Entrar'}
-          </button>
-        </form>
+            {tab === 'register' ? 'Criar Conta' : 'Entrar'}
+          </motion.button>
+        </a>
 
         <div className="mt-6 flex items-center gap-2">
           <div className="h-px flex-1 bg-white/10" />
