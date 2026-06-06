@@ -4,81 +4,21 @@ import { HeroParallax } from './components/ui/hero-parallax';
 import Link from 'next/link';
 
 const restaurantImages = [
-  {
-    title: 'La Cecilia',
-    link: '/reserva/la-cecilia',
-    thumbnail: '/restaurants/La_Cecilia_Cantina_e_Cafe_Foto_Fachada.jpg',
-  },
-  {
-    title: 'La Cabane',
-    link: '/reserva/la-cabane',
-    thumbnail: '/restaurants/Fachada-La-Cabane_JP-Divulgacao-1024x683.jpg',
-  },
-  {
-    title: 'Orgazz',
-    link: '/reserva/orgazz',
-    thumbnail: '/restaurants/restaurante-orgaz132.jpg',
-  },
-  {
-    title: 'Encontro',
-    link: '/reserva/encontro',
-    thumbnail: '/restaurants/Fachada-de-Restaurante-Simples-Como-Criar-um-Visual-Acolhedor-e-Convidativo-1024x612.jpg',
-  },
-  {
-    title: 'Absolutto',
-    link: '/reserva/absolutto',
-    thumbnail: '/restaurants/fachada-do-restaurante.jpg',
-  },
-  {
-    title: 'Maro Vibe',
-    link: '/reserva/maro-vibe',
-    thumbnail: '/restaurants/fachada-do-restaurante (1).jpg',
-  },
-  {
-    title: 'Takeshi',
-    link: '/reserva/takeshi',
-    thumbnail: '/restaurants/Fonte-Pinterest-5.jpg',
-  },
-  {
-    title: 'Churrascaria',
-    link: '/reserva/churrascaria',
-    thumbnail: '/restaurants/490b640ca8bb4726489296c98509fdb6.jpg',
-  },
-  {
-    title: 'La Cecilia',
-    link: '/reserva/la-cecilia-2',
-    thumbnail: '/restaurants/La_Cecilia_Cantina_e_Cafe_Foto_Fachada.jpg',
-  },
-  {
-    title: 'La Cabane',
-    link: '/reserva/la-cabane-2',
-    thumbnail: '/restaurants/Fachada-La-Cabane_JP-Divulgacao-1024x683.jpg',
-  },
-  {
-    title: 'Orgazz',
-    link: '/reserva/orgazz-2',
-    thumbnail: '/restaurants/restaurante-orgaz132.jpg',
-  },
-  {
-    title: 'Encontro',
-    link: '/reserva/encontro-2',
-    thumbnail: '/restaurants/Fachada-de-Restaurante-Simples-Como-Criar-um-Visual-Acolhedor-e-Convidativo-1024x612.jpg',
-  },
-  {
-    title: 'Absolutto',
-    link: '/reserva/absolutto-2',
-    thumbnail: '/restaurants/fachada-do-restaurante.jpg',
-  },
-  {
-    title: 'Maro Vibe',
-    link: '/reserva/maro-vibe-2',
-    thumbnail: '/restaurants/fachada-do-restaurante (1).jpg',
-  },
-  {
-    title: 'Takeshi',
-    link: '/reserva/takeshi-2',
-    thumbnail: '/restaurants/Fonte-Pinterest-5.jpg',
-  },
+  { title: 'La Cecilia', link: '/reserva/la-cecilia', thumbnail: '/restaurants/1.jpg' },
+  { title: 'La Cabane', link: '/reserva/la-cabane', thumbnail: '/restaurants/2.jpg' },
+  { title: 'Orgazz', link: '/reserva/orgazz', thumbnail: '/restaurants/3.jpg' },
+  { title: 'Encontro', link: '/reserva/encontro', thumbnail: '/restaurants/4.jpg' },
+  { title: 'Absolutto', link: '/reserva/absolutto', thumbnail: '/restaurants/5.jpg' },
+  { title: 'Maro Vibe', link: '/reserva/maro-vibe', thumbnail: '/restaurants/6.jpg' },
+  { title: 'Takeshi', link: '/reserva/takeshi', thumbnail: '/restaurants/7.jpg' },
+  { title: 'Churrascaria', link: '/reserva/churrascaria', thumbnail: '/restaurants/8.jpg' },
+  { title: 'La Cecilia', link: '/reserva/la-cecilia-2', thumbnail: '/restaurants/1.jpg' },
+  { title: 'La Cabane', link: '/reserva/la-cabane-2', thumbnail: '/restaurants/2.jpg' },
+  { title: 'Orgazz', link: '/reserva/orgazz-2', thumbnail: '/restaurants/3.jpg' },
+  { title: 'Encontro', link: '/reserva/encontro-2', thumbnail: '/restaurants/4.jpg' },
+  { title: 'Absolutto', link: '/reserva/absolutto-2', thumbnail: '/restaurants/5.jpg' },
+  { title: 'Maro Vibe', link: '/reserva/maro-vibe-2', thumbnail: '/restaurants/6.jpg' },
+  { title: 'Takeshi', link: '/reserva/takeshi-2', thumbnail: '/restaurants/7.jpg' },
 ];
 
 export default function Home() {
