@@ -38,12 +38,7 @@ export default function DashboardPage() {
     },
   ];
 
-  const upcomingReservations = [
-    { time: '12:00', name: 'João Silva', party: 4, table: 'A5' },
-    { time: '12:30', name: 'Maria Santos', party: 2, table: 'B2' },
-    { time: '13:00', name: 'Carlos Oliveira', party: 6, table: 'C1-C2' },
-    { time: '19:30', name: 'Ana Costa', party: 3, table: 'A2' },
-  ];
+  const upcomingReservations: Array<{ time: string; name: string; party: number; table: string }> = [];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -106,30 +101,36 @@ export default function DashboardPage() {
         {/* Upcoming Reservations */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Próximas Reservas Hoje</h3>
-          <div className="space-y-3">
-            {upcomingReservations.map((reservation, idx) => (
-              <motion.div
-                key={idx}
-                variants={itemVariants}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
-              >
-                <div>
-                  <p className="font-semibold text-gray-900">{reservation.name}</p>
-                  <p className="text-sm text-gray-600">
-                    {reservation.party} pessoas • Mesa {reservation.table}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-lg text-amber-600">{reservation.time}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <Link href="/dashboard/reservas" className="block w-full mt-4">
-            <button className="w-full py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition font-medium">
-              Ver todas as reservas →
-            </button>
-          </Link>
+          {upcomingReservations.length > 0 ? (
+            <>
+              <div className="space-y-3">
+                {upcomingReservations.map((reservation, idx) => (
+                  <motion.div
+                    key={idx}
+                    variants={itemVariants}
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                  >
+                    <div>
+                      <p className="font-semibold text-gray-900">{reservation.name}</p>
+                      <p className="text-sm text-gray-600">
+                        {reservation.party} pessoas • Mesa {reservation.table}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-lg text-amber-600">{reservation.time}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <Link href="/dashboard/reservas" className="block w-full mt-4">
+                <button className="w-full py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition font-medium">
+                  Ver todas as reservas →
+                </button>
+              </Link>
+            </>
+          ) : (
+            <p className="text-gray-500 text-center py-8">Nenhuma reserva para hoje</p>
+          )}
         </div>
 
         {/* Quick Actions */}

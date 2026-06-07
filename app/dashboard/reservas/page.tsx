@@ -2,17 +2,12 @@
 
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Users, Phone, Edit2, LogIn, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Users, Phone, Edit2, LogIn, Trash2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ReservasPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 5, 1));
 
-  const [reservations, setReservations] = useState([
-    { id: 1, name: 'João Silva', date: '05/06/2026', time: '12:00', party: 4, table: 'A5', phone: '(11) 98765-4321', status: 'Confirmada' },
-    { id: 2, name: 'Maria Santos', date: '05/06/2026', time: '12:30', party: 2, table: 'B2', phone: '(11) 91234-5678', status: 'Confirmada' },
-    { id: 3, name: 'Carlos Oliveira', date: '05/06/2026', time: '13:00', party: 6, table: 'C1-C2', phone: '(11) 99876-5432', status: 'Pendente' },
-    { id: 4, name: 'Ana Costa', date: '06/06/2026', time: '19:30', party: 3, table: 'A2', phone: '(11) 98765-1234', status: 'Confirmada' },
-  ]);
+  const [reservations, setReservations] = useState([]);
 
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editData, setEditData] = useState({ name: '', phone: '', table: '', time: '' });
@@ -37,6 +32,10 @@ export default function ReservasPage() {
 
   const handleCancel = () => {
     setEditingId(null);
+  };
+
+  const handleDeleteReservation = (id: number) => {
+    setReservations(reservations.filter(res => res.id !== id));
   };
 
   const reservationsByDate = useMemo(() => {
@@ -116,18 +115,14 @@ export default function ReservasPage() {
                       : 'bg-gray-50 text-gray-900 border border-gray-200'
                   }`}
                 >
-                  <div className="text-center">
-                    <div>{day}</div>
-                    {count > 0 && <div className="text-xs">{count}</div>}
-                  </div>
+                  {day}
                 </motion.div>
               );
             })}
           </div>
 
           <div className="text-xs text-gray-600 space-y-1">
-            <p>🟨 Cores destacadas = há reservas</p>
-            <p>📊 Número = quantidade de reservas</p>
+            <p>🟨 Quadrado destacado = há reservas no dia</p>
           </div>
         </div>
 
@@ -227,6 +222,14 @@ export default function ReservasPage() {
                           Check-in
                         </motion.button>
                       )}
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        onClick={() => handleDeleteReservation(res.id)}
+                        className="text-red-600 hover:text-red-800 font-semibold text-sm inline-flex items-center gap-1"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        Excluir
+                      </motion.button>
                     </>
                   )}
                 </td>

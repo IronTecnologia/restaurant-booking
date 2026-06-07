@@ -1,28 +1,25 @@
 ﻿'use client';
 
 import { motion } from 'framer-motion';
-import { Bell, Lock, User, Building2, Save, Calendar, X, Plus } from 'lucide-react';
+import { Save, X, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 export default function SettingsPage() {
   const [formData, setFormData] = useState({
-    restaurantName: 'Meu Restaurante',
-    email: 'contato@restaurante.com.br',
-    phone: '(11) 3333-3333',
-    address: 'Rua Principal, 123 - São Paulo, SP',
-    salonCapacity: '100',
-    reservationPercentage: '70',
+    restaurantName: '',
+    email: '',
+    phone: '',
+    address: '',
+    salonCapacity: '',
+    reservationPercentage: '',
     reservationType: 'mesa',
   });
 
-  const [specialDates, setSpecialDates] = useState([
-    { date: '2026-06-24', name: 'Festa de São João', windows: [{ start: '18:00', end: '22:00' }] },
-  ]);
+  const [specialDates, setSpecialDates] = useState([]);
 
-  const [newDate, setNewDate] = useState({ date: '', name: '', start: '18:00', end: '22:00' });
+  const [newDate, setNewDate] = useState({ date: '', name: '', start: '18:00', end: '22:00', tables: '' });
   const [showAddDate, setShowAddDate] = useState(false);
   const [savedMessage, setSavedMessage] = useState('');
-  const [activeSection, setActiveSection] = useState('info');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -44,12 +41,12 @@ export default function SettingsPage() {
   };
 
   const handleAddSpecialDate = () => {
-    if (newDate.date && newDate.name) {
+    if (newDate.date && newDate.name && newDate.tables) {
       setSpecialDates([
         ...specialDates,
-        { date: newDate.date, name: newDate.name, windows: [{ start: newDate.start, end: newDate.end }] }
+        { date: newDate.date, name: newDate.name, windows: [{ start: newDate.start, end: newDate.end }], tables: newDate.tables }
       ]);
-      setNewDate({ date: '', name: '', start: '18:00', end: '22:00' });
+      setNewDate({ date: '', name: '', start: '18:00', end: '22:00', tables: '' });
       setShowAddDate(false);
     }
   };
@@ -57,13 +54,6 @@ export default function SettingsPage() {
   const handleRemoveSpecialDate = (index: number) => {
     setSpecialDates(specialDates.filter((_, i) => i !== index));
   };
-
-  const settings = [
-    { icon: User, title: 'Perfil', description: 'Atualize informações do restaurante' },
-    { icon: Lock, title: 'Segurança', description: 'Altere sua senha e permissões' },
-    { icon: Bell, title: 'Notificações', description: 'Configure alertas de reservas' },
-    { icon: Building2, title: 'Configurações da Loja', description: 'Horários e políticas' },
-  ];
 
   return (
     <motion.div
@@ -87,31 +77,6 @@ export default function SettingsPage() {
           {savedMessage}
         </motion.div>
       )}
-
-      {/* Settings Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {settings.map((setting, idx) => (
-          <motion.button
-            key={idx}
-            whileHover={{ scale: 1.02 }}
-            onClick={() => setActiveSection(setting.title.toLowerCase())}
-            className="bg-white rounded-xl border border-gray-200 p-6 cursor-pointer hover:shadow-md transition text-left"
-          >
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-amber-100">
-                <setting.icon className="h-6 w-6 text-amber-600" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-gray-900">{setting.title}</h3>
-                <p className="text-sm text-gray-600">{setting.description}</p>
-              </div>
-              <div className="text-gray-400 hover:text-gray-600">
-                →
-              </div>
-            </div>
-          </motion.button>
-        ))}
-      </div>
 
       {/* Restaurant Info Form */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -168,15 +133,14 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             type="submit"
+            onClick={handleSaveRestaurantInfo}
             className="flex items-center gap-2 bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 transition"
           >
             <Save className="h-5 w-5" />
             Salvar Alterações
-          </motion.button>
+          </button>
         </form>
       </div>
 
@@ -230,15 +194,14 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             type="submit"
+            onClick={handleSaveCapacity}
             className="flex items-center gap-2 bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 transition"
           >
             <Save className="h-5 w-5" />
             Salvar Capacidade
-          </motion.button>
+          </button>
         </form>
       </div>
 
@@ -246,16 +209,14 @@ export default function SettingsPage() {
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900">Datas Especiais</h2>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={() => setShowAddDate(true)}
             className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-amber-700 transition"
             type="button"
           >
             <Plus className="h-4 w-4" />
             Adicionar Data
-          </motion.button>
+          </button>
         </div>
 
         {showAddDate && (
@@ -308,25 +269,35 @@ export default function SettingsPage() {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Mesas Disponíveis</label>
+              <input
+                type="text"
+                value={newDate.tables}
+                onChange={(e) => setNewDate({ ...newDate, tables: e.target.value })}
+                placeholder="Ex: A1, A2, B1, B2, C1"
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-amber-600 focus:outline-none"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Separe as mesas por vírgula
+              </p>
+            </div>
+
             <div className="flex gap-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 type="button"
                 onClick={handleAddSpecialDate}
                 className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition"
               >
                 Adicionar
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              </button>
+              <button
                 type="button"
                 onClick={() => setShowAddDate(false)}
                 className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
               >
                 Cancelar
-              </motion.button>
+              </button>
             </div>
           </motion.div>
         )}
@@ -345,16 +316,17 @@ export default function SettingsPage() {
                   <p className="text-sm text-gray-600">
                     {special.windows.map(w => `${w.start} - ${w.end}`).join(', ')}
                   </p>
+                  <p className="text-sm text-amber-700 mt-1">
+                    📍 Mesas: {special.tables}
+                  </p>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                <button
                   onClick={() => handleRemoveSpecialDate(idx)}
-                  className="text-red-600 hover:text-red-800"
+                  className="text-red-600 hover:text-red-800 p-1"
                   type="button"
                 >
                   <X className="h-5 w-5" />
-                </motion.button>
+                </button>
               </motion.div>
             ))}
           </div>

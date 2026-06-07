@@ -5,10 +5,10 @@ import { TrendingUp, Users, Calendar, DollarSign } from 'lucide-react';
 
 export default function RelatoriosPage() {
   const reports = [
-    { label: 'Reservas', value: '156', change: '+12%', icon: Calendar, color: 'bg-blue-500' },
-    { label: 'Faturamento', value: 'R$ 18.5K', change: '+8%', icon: DollarSign, color: 'bg-green-500' },
-    { label: 'Taxa de Ocupação', value: '87%', change: '+5%', icon: TrendingUp, color: 'bg-purple-500' },
-    { label: 'Novos Clientes', value: '34', change: '+15%', icon: Users, color: 'bg-orange-500' },
+    { label: 'Reservas', value: '0', change: '-', icon: Calendar, color: 'bg-blue-500' },
+    { label: 'Faturamento', value: 'R$ 0', change: '-', icon: DollarSign, color: 'bg-green-500' },
+    { label: 'Taxa de Ocupação', value: '0%', change: '-', icon: TrendingUp, color: 'bg-purple-500' },
+    { label: 'Novos Clientes', value: '0', change: '-', icon: Users, color: 'bg-orange-500' },
   ];
 
   return (
@@ -53,52 +53,12 @@ export default function RelatoriosPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Horários de Pico</h2>
-          <div className="space-y-3">
-            {[
-              { time: '12:00-13:30', reservations: 8 },
-              { time: '13:30-15:00', reservations: 5 },
-              { time: '19:00-20:30', reservations: 12 },
-              { time: '20:30-22:00', reservations: 9 },
-            ].map((peak, idx) => (
-              <div key={idx} className="flex justify-between items-center">
-                <span className="text-gray-700">{peak.time}</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-24 h-2 bg-gray-200 rounded">
-                    <div
-                      className="h-full bg-amber-600 rounded"
-                      style={{ width: `${(peak.reservations / 12) * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-semibold text-gray-900">{peak.reservations}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <p className="text-gray-500 text-center py-8">Dados não disponíveis. Comece a receber reservas para ver análises.</p>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Mesas Mais Utilizadas</h2>
-          <div className="space-y-3">
-            {[
-              { table: 'A1-A2', usage: 95 },
-              { table: 'B2-B3', usage: 88 },
-              { table: 'C1', usage: 82 },
-              { table: 'A5', usage: 78 },
-            ].map((table, idx) => (
-              <div key={idx} className="flex justify-between items-center">
-                <span className="text-gray-700">Mesa {table.table}</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-24 h-2 bg-gray-200 rounded">
-                    <div
-                      className="h-full bg-green-600 rounded"
-                      style={{ width: `${table.usage}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-semibold text-gray-900">{table.usage}%</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <p className="text-gray-500 text-center py-8">Dados não disponíveis. Comece a receber reservas para ver análises.</p>
         </div>
       </div>
     </motion.div>
