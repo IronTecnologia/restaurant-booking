@@ -1,10 +1,12 @@
 ﻿'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Users, Phone, Edit2, LogIn, X } from 'lucide-react';
+import { Calendar, MapPin, Users, Phone, Edit2, LogIn, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ReservasPage() {
+  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 5, 1));
+
   const [reservations, setReservations] = useState([
     { id: 1, name: 'João Silva', date: '05/06/2026', time: '12:00', party: 4, table: 'A5', phone: '(11) 98765-4321', status: 'Confirmada' },
     { id: 2, name: 'Maria Santos', date: '05/06/2026', time: '12:30', party: 2, table: 'B2', phone: '(11) 91234-5678', status: 'Confirmada' },
@@ -37,6 +39,22 @@ export default function ReservasPage() {
     setEditingId(null);
   };
 
+  const reservationsByDate = useMemo(() => {
+    const map: { [key: string]: number } = {};
+    reservations.forEach(res => {
+      const [day, month, year] = res.date.split('/');
+      const dateStr = `${year}-${month}-${day}`;
+      map[dateStr] = (map[dateStr] || 0) + 1;
+    });
+    return map;
+  }, [reservations]);
+
+  const getDaysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  const getFirstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+
+  const calendarDays = Array.from({ length: getDaysInMonth(currentMonth) }, (_, i) => i + 1);
+  const emptyDays = Array.from({ length: getFirstDayOfMonth(currentMonth) }, (_, i) => i);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -53,8 +71,72 @@ export default function ReservasPage() {
         </motion.button>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <table className="w-full">
+      {/* Calendário */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1 bg-white rounded-xl border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-gray-900">
+              {currentMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+            </h3>
+            <div className="flex gap-2">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </motion.button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-7 gap-1 mb-4">
+            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(day => (
+              <div key={day} className="text-center text-xs font-semibold text-gray-600 py-2">
+                {day}
+              </div>
+            ))}
+            {emptyDays.map(i => <div key={`empty-${i}`} />)}
+            {calendarDays.map(day => {
+              const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+              const count = reservationsByDate[dateStr] || 0;
+              return (
+                <motion.div
+                  key={day}
+                  whileHover={{ scale: 1.05 }}
+                  className={`aspect-square flex items-center justify-center rounded-lg text-sm font-semibold cursor-pointer transition ${
+                    count > 0
+                      ? 'bg-amber-100 text-amber-900 border-2 border-amber-600'
+                      : 'bg-gray-50 text-gray-900 border border-gray-200'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div>{day}</div>
+                    {count > 0 && <div className="text-xs">{count}</div>}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="text-xs text-gray-600 space-y-1">
+            <p>🟨 Cores destacadas = há reservas</p>
+            <p>📊 Número = quantidade de reservas</p>
+          </div>
+        </div>
+
+        {/* Tabela de Reservas */}
+        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div className="p-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-gray-900">Reservas do Mês</h3>
+          </div>
+          <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Hóspede</th>
@@ -152,6 +234,7 @@ export default function ReservasPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Edit Modal */}
