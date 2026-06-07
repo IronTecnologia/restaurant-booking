@@ -21,12 +21,26 @@ export default function SettingsPage() {
 
   const [newDate, setNewDate] = useState({ date: '', name: '', start: '18:00', end: '22:00' });
   const [showAddDate, setShowAddDate] = useState(false);
+  const [savedMessage, setSavedMessage] = useState('');
+  const [activeSection, setActiveSection] = useState('info');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSaveRestaurantInfo = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavedMessage('✅ Informações salvas com sucesso!');
+    setTimeout(() => setSavedMessage(''), 3000);
+  };
+
+  const handleSaveCapacity = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavedMessage('✅ Configuração de capacidade salva!');
+    setTimeout(() => setSavedMessage(''), 3000);
   };
 
   const handleAddSpecialDate = () => {
@@ -62,13 +76,26 @@ export default function SettingsPage() {
         <p className="text-gray-600">Gerencie as informações e preferências do seu restaurante</p>
       </div>
 
+      {/* Mensagem de Sucesso */}
+      {savedMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg"
+        >
+          {savedMessage}
+        </motion.div>
+      )}
+
       {/* Settings Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {settings.map((setting, idx) => (
-          <motion.div
+          <motion.button
             key={idx}
             whileHover={{ scale: 1.02 }}
-            className="bg-white rounded-xl border border-gray-200 p-6 cursor-pointer hover:shadow-md transition"
+            onClick={() => setActiveSection(setting.title.toLowerCase())}
+            className="bg-white rounded-xl border border-gray-200 p-6 cursor-pointer hover:shadow-md transition text-left"
           >
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-lg bg-amber-100">
@@ -78,18 +105,18 @@ export default function SettingsPage() {
                 <h3 className="text-lg font-bold text-gray-900">{setting.title}</h3>
                 <p className="text-sm text-gray-600">{setting.description}</p>
               </div>
-              <button className="text-gray-400 hover:text-gray-600">
+              <div className="text-gray-400 hover:text-gray-600">
                 →
-              </button>
+              </div>
             </div>
-          </motion.div>
+          </motion.button>
         ))}
       </div>
 
       {/* Restaurant Info Form */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <h2 className="text-lg font-bold text-gray-900 mb-4">Informações do Restaurante</h2>
-        <form className="space-y-4">
+        <form onSubmit={handleSaveRestaurantInfo} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -143,6 +170,7 @@ export default function SettingsPage() {
 
           <motion.button
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             className="flex items-center gap-2 bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 transition"
           >
@@ -155,7 +183,7 @@ export default function SettingsPage() {
       {/* Configurações de Capacidade */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <h2 className="text-lg font-bold text-gray-900 mb-4">Capacidade do Salão</h2>
-        <form className="space-y-4">
+        <form onSubmit={handleSaveCapacity} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -204,6 +232,7 @@ export default function SettingsPage() {
 
           <motion.button
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             className="flex items-center gap-2 bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 transition"
           >
@@ -219,8 +248,10 @@ export default function SettingsPage() {
           <h2 className="text-lg font-bold text-gray-900">Datas Especiais</h2>
           <motion.button
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setShowAddDate(true)}
             className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-amber-700 transition"
+            type="button"
           >
             <Plus className="h-4 w-4" />
             Adicionar Data
@@ -280,6 +311,7 @@ export default function SettingsPage() {
             <div className="flex gap-2">
               <motion.button
                 whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={handleAddSpecialDate}
                 className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition"
@@ -288,6 +320,7 @@ export default function SettingsPage() {
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={() => setShowAddDate(false)}
                 className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
@@ -315,8 +348,10 @@ export default function SettingsPage() {
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => handleRemoveSpecialDate(idx)}
                   className="text-red-600 hover:text-red-800"
+                  type="button"
                 >
                   <X className="h-5 w-5" />
                 </motion.button>
