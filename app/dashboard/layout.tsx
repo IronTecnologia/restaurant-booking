@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, X, LogOut, Settings, Home, Calendar, Users, BarChart3 } from 'lucide-react';
+import { Menu, X, LogOut, Settings, Home, Calendar, Users, BarChart3, Share2, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardLayout({
@@ -11,6 +11,17 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  // Slug do restaurante - em produção virá do usuário logado
+  const restaurantSlug = 'meu-restaurante';
+  const bookingLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/reserva/${restaurantSlug}`;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(bookingLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const menuItems = [
     { icon: Home, label: 'Início', href: '/dashboard' },
@@ -62,6 +73,36 @@ export default function DashboardLayout({
             </Link>
           ))}
         </nav>
+
+        {/* Share Section */}
+        {sidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="px-4 py-4 border-t border-gray-700 mx-2"
+          >
+            <p className="text-xs font-semibold text-gray-400 mb-3 uppercase">Compartilhar Reservas</p>
+            <button
+              onClick={handleCopyLink}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-600/20 text-amber-400 hover:bg-amber-600/30 transition text-sm font-medium"
+            >
+              {copied ? (
+                <>
+                  <Check className="h-4 w-4" />
+                  Copiado!
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4" />
+                  Copiar Link
+                </>
+              )}
+            </button>
+            <p className="text-xs text-gray-500 mt-2">
+              Compartilhe este link com seus clientes para receberem reservas
+            </p>
+          </motion.div>
+        )}
 
         <div className="absolute bottom-4 left-2 right-2 space-y-2">
           <Link
